@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Pro Calculator</title>
+    <style>
+        :root {
+            --bg: #121212; --card: #1e1e1e; --text: #ffffff; --btn: #333; --op: #fb8c00;
+        }
+        .light-mode {
+            --bg: #f0f0f0; --card: #ffffff; --text: #000000; --btn: #e0e0e0; --op: #f57c00;
+        }
+        
+        body {
+            background-color: var(--bg); color: var(--text);
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; font-family: 'Segoe UI', sans-serif;
+            transition: 0.3s;
+        }
+
+        .calc-card {
+            background: var(--card); padding: 25px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 350px;
+        }
+
+        .header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        
+        #display {
+            width: 100%; height: 70px; font-size: 35px; text-align: right;
+            background: transparent; border: none; color: var(--text); outline: none;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+        button {
+            height: 60px; border-radius: 12px; border: none; cursor: pointer;
+            font-size: 18px; background: var(--btn); color: var(--text); transition: 0.2s;
+        }
+
+        button:hover { filter: brightness(1.2); }
+        .orange { background: var(--op); color: white; }
+        .red { background: #e53935; color: white; }
+
+        .theme-btn {
+            background: none; border: 1px solid var(--text); color: var(--text);
+            padding: 5px 10px; border-radius: 5px; cursor: pointer; height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calc-card">
+    <div class="header">
+        <span>Calculator PRO</span>
+        <button class="theme-btn" onclick="toggleTheme()">Dark/Light</button>
+    </div>
+    
+    <input type="text" id="display" readonly placeholder="0">
+    <hr style="opacity: 0.1; margin-bottom: 20px;">
+
+    <div class="grid">
+        <button onclick="scientific('sq')">x²</button>
+        <button onclick="scientific('cube')">x³</button>
+        <button onclick="scientific('pi')">π</button>
+        <button class="red" onclick="clearScreen()">AC</button>
+
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button class="orange" onclick="press('/')">÷</button>
+
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button class="orange" onclick="press('*')">×</button>
+
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button class="orange" onclick="press('-')">−</button>
+
+        <button onclick="press('0')">0</button>
+        <button onclick="press('.')">.</button>
+        <button class="orange" onclick="calculate()" style="grid-column: span 2;">=</button>
+        <button class="orange" onclick="press('+')" style="grid-column: 4; grid-row: 4/6; height: 130px;">+</button>
+    </div>
+</div>
+
+<script>
+    const screen = document.getElementById('display');
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+    }
+
+    function press(val) {
+        if(screen.value === "0") screen.value = val;
+        else screen.value += val;
+    }
+
+    function clearScreen() { screen.value = ""; }
+
+    function scientific(type) {
+        let v = parseFloat(screen.value) || 0;
+        if(type === 'sq') screen.value = v * v;
+        if(type === 'cube') screen.value = v * v * v;
+        if(type === 'pi') screen.value = (Math.PI).toFixed(4);
+    }
+
+    function calculate() {
+        try {
+            screen.value = eval(screen.value);
+        } catch {
+            screen.value = "Error";
+        }
+    }
+</script>
+
+</body>
+</html>
